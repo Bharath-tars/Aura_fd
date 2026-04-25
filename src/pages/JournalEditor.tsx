@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Loader2, Sparkles, Save, ArrowLeft, ChevronDown, ChevronUp } from 'lucide-react'
 import { journalApi } from '@/api/journal'
@@ -7,6 +7,8 @@ import { cn, getSentimentColor, getSentimentLabel } from '@/lib/utils'
 
 export default function JournalEditor() {
   const { id } = useParams<{ id?: string }>()
+  const [searchParams] = useSearchParams()
+  const planId = searchParams.get('planId')
   const navigate = useNavigate()
   const qc = useQueryClient()
 
@@ -32,9 +34,10 @@ export default function JournalEditor() {
     mutationFn: () =>
       id
         ? journalApi.update(id, { title, content }).then((r) => r.data)
-        : journalApi.create({ title, content }).then((r) => r.data),
+        : journalApi.create({ title, content, ...(planId ? { plan_id: planId } : {}) }).then((r) => r.data),
     onSuccess: (data) => {
       qc.invalidateQueries({ queryKey: ['journal-list'] })
+      if (planId) qc.invalidateQueries({ queryKey: ['plan-journals', planId] })
       qc.setQueryData(['journal-entry', data.id], data)
       if (!id) navigate(`/journal/${data.id}`, { replace: true })
     },

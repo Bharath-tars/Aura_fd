@@ -2,7 +2,7 @@ import client from './client'
 import type { JournalEntry, JournalListItem, PaginatedResponse } from '@/types'
 
 export const journalApi = {
-  create: (data: { title: string; content: string }) =>
+  create: (data: { title: string; content: string; plan_id?: string }) =>
     client.post<JournalEntry>('/journal/', data),
 
   list: (skip = 0, limit = 20) =>

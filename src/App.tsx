@@ -10,6 +10,7 @@ import MoodTracker from '@/pages/MoodTracker'
 import Journal from '@/pages/Journal'
 import JournalEditor from '@/pages/JournalEditor'
 import WellnessPlans from '@/pages/WellnessPlans'
+import PlanDetail from '@/pages/PlanDetail'
 import Analytics from '@/pages/Analytics'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -41,6 +42,7 @@ export default function App() {
                   <Route path="/journal/new" element={<JournalEditor />} />
                   <Route path="/journal/:id" element={<JournalEditor />} />
                   <Route path="/wellness" element={<WellnessPlans />} />
+                  <Route path="/wellness/:planId" element={<PlanDetail />} />
                   <Route path="/analytics" element={<Analytics />} />
                   <Route path="*" element={<Navigate to="/dashboard" replace />} />
                 </Routes>

@@ -1,11 +1,20 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Target, Loader2, Sparkles } from 'lucide-react'
 import { wellnessApi } from '@/api/wellness'
 import { cn } from '@/lib/utils'
 import type { WellnessPlan } from '@/types'
 
-function PlanCard({ plan, onStatusChange }: { plan: WellnessPlan; onStatusChange: (id: string, status: string) => void }) {
+function PlanCard({
+  plan,
+  onStatusChange,
+  onNavigate,
+}: {
+  plan: WellnessPlan
+  onStatusChange: (id: string, status: string) => void
+  onNavigate: (id: string) => void
+}) {
   const statusColors: Record<string, string> = {
     active: 'bg-emerald-100 text-emerald-700',
     paused: 'bg-amber-100 text-amber-700',
@@ -13,11 +22,14 @@ function PlanCard({ plan, onStatusChange }: { plan: WellnessPlan; onStatusChange
   }
   return (
     <div className="bg-white rounded-2xl border border-border p-5 shadow-sm space-y-4">
-      <div className="flex items-start justify-between">
+      <div
+        className="flex items-start justify-between cursor-pointer group"
+        onClick={() => onNavigate(plan.id)}
+      >
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
             {plan.ai_generated && <Sparkles className="w-3.5 h-3.5 text-primary shrink-0" />}
-            <h3 className="font-semibold text-foreground truncate">{plan.title}</h3>
+            <h3 className="font-semibold text-foreground truncate group-hover:text-primary transition-colors">{plan.title}</h3>
           </div>
           {plan.description && <p className="text-sm text-muted-foreground">{plan.description}</p>}
         </div>
@@ -82,6 +94,7 @@ function PlanCard({ plan, onStatusChange }: { plan: WellnessPlan; onStatusChange
 }
 
 export default function WellnessPlans() {
+  const navigate = useNavigate()
   const qc = useQueryClient()
   const [generating, setGenerating] = useState(false)
   const [focus, setFocus] = useState('')
@@ -168,6 +181,7 @@ export default function WellnessPlans() {
             key={plan.id}
             plan={plan}
             onStatusChange={(id, status) => statusMutation.mutate({ id, status })}
+            onNavigate={(id) => navigate(`/wellness/${id}`)}
           />
         ))}
       </div>

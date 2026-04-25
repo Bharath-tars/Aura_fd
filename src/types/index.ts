@@ -44,6 +44,7 @@ export interface AIInsight {
 
 export interface JournalEntry {
   id: string
+  plan_id: string | null
   title: string
   content: string
   ai_insights: AIInsight[] | null
@@ -57,6 +58,7 @@ export interface JournalEntry {
 
 export interface JournalListItem {
   id: string
+  plan_id: string | null
   title: string
   themes: string[]
   sentiment_score: number | null
@@ -127,6 +129,18 @@ export interface Streak {
   current_streak: number
   longest_streak: number
   last_checkin_date: string | null
+}
+
+export interface PlanTask {
+  id: string
+  plan_id: string
+  title: string
+  notes: string | null
+  completed: boolean
+  time_logged_min: number
+  sort_order: number
+  created_at: string
+  updated_at: string
 }
 
 export interface PaginatedResponse<T> {
