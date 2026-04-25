@@ -183,6 +183,7 @@ export default function Setup() {
               )}
             </div>
           </form>
+        </div>
         <p className="text-center text-sm text-muted-foreground mt-4">
           Already have an account?{' '}
           <Link to="/login" className="text-primary font-medium hover:underline">
