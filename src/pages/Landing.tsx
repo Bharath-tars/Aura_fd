@@ -316,7 +316,7 @@ export default function Landing() {
             >
               Aura learns your patterns, connects your mood to your habits, and
               shows up as a personalised coach — grounded in your data, not a script.
-              Built on a 7-agent semantic graph powered by Gemini 2.5 Flash.
+              Built on a multi-agent semantic graph that understands you deeper over time.
             </motion.p>
 
             <motion.div
@@ -396,7 +396,7 @@ export default function Landing() {
             />
             <div className="absolute inset-0 rounded-2xl ring-1 ring-white/5" />
             <p className="mt-3 text-xs text-white/20 text-center italic">
-              AI-generated · Each dot = a city where mental health care is needed.
+              Each dot = a city where mental health care is needed.
               Bright = access. Dim = the treatment gap.
             </p>
           </div>
@@ -610,7 +610,7 @@ export default function Landing() {
                 fallback="from-indigo-900/40 to-violet-900/20"
               />
               <p className="text-xs text-white/20 italic text-center">
-                AI-generated · Aura in a morning wellness session
+                Aura in a morning wellness session
               </p>
             </div>
           </div>
@@ -895,10 +895,9 @@ export default function Landing() {
             <span>— AI Mental Wellness Platform · © 2025 Synaptyx.AI</span>
           </div>
           <div className="flex flex-wrap gap-x-6 gap-y-1 justify-center">
-            <span>Gemini 2.5 Flash + Imagen 3</span>
-            <span>LangGraph Multi-Agent</span>
+            <span>Multi-Agent Intelligence</span>
             <span>Evidence-based design</span>
-            <span>Cohen's d = 0.47 AI coaching effect</span>
+            <span>Cohen's d = 0.47 coaching effect</span>
           </div>
           <div className="text-white/15 text-[11px] text-center md:text-right leading-relaxed">
             Stats: WHO 2025 · McKinsey MHI 2025 · Deloitte 2024
