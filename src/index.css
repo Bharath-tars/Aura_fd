@@ -39,3 +39,12 @@
 /* Dynamic progress bar — width driven by --streak-pct CSS variable set via JS */
 .streak-track { --streak-pct: 0%; }
 .streak-fill  { width: var(--streak-pct); }
+
+/* Landing page — radial vignette that darkens edges of the hero canvas */
+.bg-radial-gradient {
+  background: radial-gradient(ellipse 80% 60% at 50% 40%, transparent 0%, #05070f 100%);
+}
+
+/* Landing page — smooth section anchor scroll offset for fixed nav */
+html { scroll-behavior: smooth; }
+:target { scroll-margin-top: 80px; }
