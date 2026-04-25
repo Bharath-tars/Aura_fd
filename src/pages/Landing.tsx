@@ -240,7 +240,7 @@ export default function Landing() {
         {/* AI generated hero background (faint overlay) */}
         <div className="absolute inset-0 opacity-20">
           <LandingImage
-            src="/landing/hero.png"
+            src={`${import.meta.env.BASE_URL}landing/hero.png`}
             alt="Neural wellness graph"
             className="w-full h-full"
             fallback="from-indigo-950 to-[#05070f]"
@@ -389,7 +389,7 @@ export default function Landing() {
 
           <div className="relative">
             <LandingImage
-              src="/landing/crisis.png"
+              src={`${import.meta.env.BASE_URL}landing/crisis.png`}
               alt="Global mental health treatment gap visualized as constellation of dots"
               className="aspect-video w-full"
               fallback="from-rose-900/30 to-orange-900/10"
@@ -604,7 +604,7 @@ export default function Landing() {
             {/* Coach image */}
             <div className="space-y-4">
               <LandingImage
-                src="/landing/coach.png"
+                src={`${import.meta.env.BASE_URL}landing/coach.png`}
                 alt="Person using Aura wellness app in morning light"
                 className="aspect-[4/3] w-full"
                 fallback="from-indigo-900/40 to-violet-900/20"
@@ -658,7 +658,7 @@ export default function Landing() {
             </div>
 
             <LandingImage
-              src="/landing/tech.png"
+              src={`${import.meta.env.BASE_URL}landing/tech.png`}
               alt="Seven AI agent spheres connected by flowing data streams"
               className="aspect-video w-full"
               fallback="from-violet-900/40 to-indigo-900/20"
@@ -749,7 +749,7 @@ export default function Landing() {
             </div>
 
             <LandingImage
-              src="/landing/retention.png"
+              src={`${import.meta.env.BASE_URL}landing/retention.png`}
               alt="Contrast between generic app abandonment and Aura's warm personalized streak"
               className="aspect-square w-full max-w-md mx-auto"
               fallback="from-emerald-900/30 to-indigo-900/20"
@@ -796,7 +796,7 @@ export default function Landing() {
 
             <div className="space-y-4">
               <LandingImage
-                src="/landing/market.png"
+                src={`${import.meta.env.BASE_URL}landing/market.png`}
                 alt="Mental health market growth arc visualization"
                 className="aspect-video w-full"
                 fallback="from-amber-900/30 to-emerald-900/20"
