@@ -19,9 +19,14 @@ export default function Login() {
   const setAuth = useAuthStore((s) => s.setAuth)
   const [error, setError] = useState('')
 
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormData>({
+  const { register, handleSubmit, setValue, formState: { errors, isSubmitting } } = useForm<FormData>({
     resolver: zodResolver(schema),
   })
+
+  const fillDemo = () => {
+    setValue('email', 'demo@aura.app')
+    setValue('password', 'aura2025')
+  }
 
   const onSubmit = async (data: FormData) => {
     setError('')
@@ -45,6 +50,24 @@ export default function Login() {
           </div>
           <h1 className="text-2xl font-semibold text-foreground">Welcome back</h1>
           <p className="text-muted-foreground text-sm mt-1">Sign in to your wellness journey</p>
+        </div>
+
+        {/* Demo credentials banner */}
+        <div className="mb-4 rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-3">
+          <p className="text-xs font-semibold text-indigo-700 uppercase tracking-wide mb-2">Demo credentials</p>
+          <div className="flex items-center justify-between gap-3">
+            <div className="text-sm text-indigo-900 space-y-0.5">
+              <p><span className="font-medium">Email:</span> demo@aura.app</p>
+              <p><span className="font-medium">Password:</span> aura2025</p>
+            </div>
+            <button
+              type="button"
+              onClick={fillDemo}
+              className="shrink-0 text-xs font-medium px-3 py-1.5 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition"
+            >
+              Use these ↵
+            </button>
+          </div>
         </div>
 
         <div className="bg-white rounded-2xl shadow-sm border border-border p-6">
