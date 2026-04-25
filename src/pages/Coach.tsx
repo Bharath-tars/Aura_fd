@@ -84,6 +84,7 @@ export default function Coach() {
       session_id: sessionId,
       role: "user",
       content: message,
+      crisis_level: 0,
       created_at: new Date().toISOString(),
     };
 
@@ -128,8 +129,8 @@ export default function Coach() {
           id: `err-${Date.now()}`,
           session_id: sessionId,
           role: "assistant",
-          content:
-            "Something went wrong. Please try again.",
+          content: "Something went wrong. Please try again.",
+          crisis_level: 0,
           created_at: new Date().toISOString(),
         };
         setMessages((prev) => [...prev, errMsg]);

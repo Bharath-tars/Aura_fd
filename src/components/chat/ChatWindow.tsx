@@ -77,6 +77,7 @@ export default function ChatWindow({
             session_id: "",
             role: "assistant",
             content: streamingContent,
+            crisis_level: 0,
             created_at: new Date().toISOString(),
           }}
           isStreaming={true}
