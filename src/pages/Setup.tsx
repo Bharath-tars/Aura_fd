@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -51,7 +51,12 @@ export default function Setup() {
       navigate('/dashboard')
     } catch (err: unknown) {
       const e = err as { response?: { data?: { detail?: string } } }
-      setError(e?.response?.data?.detail ?? 'Registration failed. Please try again.')
+      const detail = e?.response?.data?.detail ?? 'Registration failed. Please try again.'
+      if (detail.toLowerCase().includes('already')) {
+        navigate('/login')
+        return
+      }
+      setError(detail)
     }
   }
 
@@ -178,7 +183,12 @@ export default function Setup() {
               )}
             </div>
           </form>
-        </div>
+        <p className="text-center text-sm text-muted-foreground mt-4">
+          Already have an account?{' '}
+          <Link to="/login" className="text-primary font-medium hover:underline">
+            Sign in
+          </Link>
+        </p>
       </div>
     </div>
   )
