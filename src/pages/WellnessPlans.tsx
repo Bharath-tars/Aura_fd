@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Plus, Target, Loader2, Sparkles, CheckCircle, Pause, RotateCcw } from 'lucide-react'
+import { Target, Loader2, Sparkles } from 'lucide-react'
 import { wellnessApi } from '@/api/wellness'
 import { cn } from '@/lib/utils'
 import type { WellnessPlan } from '@/types'
@@ -11,8 +11,6 @@ function PlanCard({ plan, onStatusChange }: { plan: WellnessPlan; onStatusChange
     paused: 'bg-amber-100 text-amber-700',
     completed: 'bg-slate-100 text-slate-600',
   }
-  const StatusIcon = plan.status === 'completed' ? CheckCircle : plan.status === 'paused' ? Pause : RotateCcw
-
   return (
     <div className="bg-white rounded-2xl border border-border p-5 shadow-sm space-y-4">
       <div className="flex items-start justify-between">

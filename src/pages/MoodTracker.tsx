@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { format } from 'date-fns'
 import { Heart, TrendingUp, TrendingDown, Minus } from 'lucide-react'
 import { moodApi } from '@/api/mood'
@@ -8,7 +8,6 @@ import MoodChart from '@/components/mood/MoodChart'
 import { cn, getMoodColor, getMoodLabel } from '@/lib/utils'
 
 export default function MoodTracker() {
-  const qc = useQueryClient()
   const [showForm, setShowForm] = useState(false)
 
   const { data: analytics } = useQuery({

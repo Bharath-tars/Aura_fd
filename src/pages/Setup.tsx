@@ -68,7 +68,7 @@ export default function Setup() {
 
         {/* Steps indicator */}
         <div className="flex items-center justify-center gap-2 mb-6">
-          {steps.map((s, i) => (
+          {steps.map((_s, i) => (
             <div key={i} className={`h-1.5 rounded-full transition-all duration-300 ${i <= step ? 'bg-primary w-8' : 'bg-border w-4'}`} />
           ))}
         </div>

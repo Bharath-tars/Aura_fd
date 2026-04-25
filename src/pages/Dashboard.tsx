@@ -1,17 +1,16 @@
 import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
-import { TrendingUp, TrendingDown, Minus, Flame, BookOpen, Target, MessageCircle } from 'lucide-react'
-import { Link, useNavigate } from 'react-router-dom'
+import { TrendingUp, TrendingDown, Minus, BookOpen, Target, MessageCircle } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { useAuthStore } from '@/store/authStore'
 import { analyticsApi } from '@/api/analytics'
 import { moodApi } from '@/api/mood'
 import MoodLogForm from '@/components/mood/MoodLogForm'
 import MoodChart from '@/components/mood/MoodChart'
-import { cn, getMoodLabel } from '@/lib/utils'
+import { cn } from '@/lib/utils'
 
 export default function Dashboard() {
   const user = useAuthStore((s) => s.user)
-  const navigate = useNavigate()
 
   const { data: dashboard } = useQuery({
     queryKey: ['dashboard'],
@@ -108,7 +107,7 @@ export default function Dashboard() {
         <div className="bg-white rounded-2xl border border-border p-5 shadow-sm">
           <h2 className="font-semibold text-foreground mb-3">Your insights</h2>
           <div className="space-y-2.5">
-            {dashboard?.top_insights.map((insight, i) => (
+            {dashboard?.top_insights.map((insight: string, i: number) => (
               <div key={i} className="flex gap-3 text-sm">
                 <span className="mt-0.5 w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-medium shrink-0">
                   {i + 1}
