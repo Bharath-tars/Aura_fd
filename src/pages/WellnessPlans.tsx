@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Target, Loader2, Sparkles } from 'lucide-react'
+import { Target, Loader2, Sparkles, Trash2 } from 'lucide-react'
 import { wellnessApi } from '@/api/wellness'
 import { cn } from '@/lib/utils'
 import type { WellnessPlan } from '@/types'
@@ -10,10 +10,12 @@ function PlanCard({
   plan,
   onStatusChange,
   onNavigate,
+  onDelete,
 }: {
   plan: WellnessPlan
   onStatusChange: (id: string, status: string) => void
   onNavigate: (id: string) => void
+  onDelete: (id: string) => void
 }) {
   const statusColors: Record<string, string> = {
     active: 'bg-emerald-100 text-emerald-700',
@@ -78,16 +80,24 @@ function PlanCard({
         </div>
       )}
 
-      <div className="flex gap-2 pt-1">
+      <div className="flex items-center gap-2 pt-1">
         {plan.status === 'active' && (
           <>
-            <button onClick={() => onStatusChange(plan.id, 'paused')} className="text-xs px-3 py-1.5 rounded-lg border border-border text-muted-foreground hover:text-foreground transition">Pause</button>
-            <button onClick={() => onStatusChange(plan.id, 'completed')} className="text-xs px-3 py-1.5 rounded-lg border border-border text-muted-foreground hover:text-foreground transition">Complete</button>
+            <button type="button" onClick={() => onStatusChange(plan.id, 'paused')} className="text-xs px-3 py-1.5 rounded-lg border border-border text-muted-foreground hover:text-foreground transition">Pause</button>
+            <button type="button" onClick={() => onStatusChange(plan.id, 'completed')} className="text-xs px-3 py-1.5 rounded-lg border border-border text-muted-foreground hover:text-foreground transition">Complete</button>
           </>
         )}
         {plan.status === 'paused' && (
-          <button onClick={() => onStatusChange(plan.id, 'active')} className="text-xs px-3 py-1.5 rounded-lg border border-border text-muted-foreground hover:text-foreground transition">Resume</button>
+          <button type="button" onClick={() => onStatusChange(plan.id, 'active')} className="text-xs px-3 py-1.5 rounded-lg border border-border text-muted-foreground hover:text-foreground transition">Resume</button>
         )}
+        <button
+          type="button"
+          onClick={(e) => { e.stopPropagation(); onDelete(plan.id) }}
+          aria-label="Delete plan"
+          className="ml-auto p-1.5 rounded-lg text-muted-foreground hover:text-rose-500 hover:bg-rose-50 transition"
+        >
+          <Trash2 className="w-3.5 h-3.5" />
+        </button>
       </div>
     </div>
   )
@@ -98,6 +108,7 @@ export default function WellnessPlans() {
   const qc = useQueryClient()
   const [generating, setGenerating] = useState(false)
   const [focus, setFocus] = useState('')
+  const [deletingId, setDeletingId] = useState<string | null>(null)
 
   const { data, isLoading } = useQuery({
     queryKey: ['wellness-plans'],
@@ -117,6 +128,14 @@ export default function WellnessPlans() {
     mutationFn: ({ id, status }: { id: string; status: string }) =>
       wellnessApi.updatePlan(id, { status }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['wellness-plans'] }),
+  })
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => wellnessApi.deletePlan(id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['wellness-plans'] })
+      setDeletingId(null)
+    },
   })
 
   return (
@@ -175,6 +194,27 @@ export default function WellnessPlans() {
         </div>
       )}
 
+      {/* Delete confirmation */}
+      {deletingId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+          <div className="bg-white rounded-2xl border border-border shadow-lg p-6 max-w-sm w-full mx-4 space-y-4">
+            <p className="font-medium text-foreground">Delete this wellness plan?</p>
+            <p className="text-sm text-muted-foreground">All tasks linked to this plan will also be deleted. This cannot be undone.</p>
+            <div className="flex gap-3">
+              <button type="button" onClick={() => setDeletingId(null)} className="flex-1 py-2 rounded-lg border border-border text-sm text-muted-foreground hover:text-foreground transition">Cancel</button>
+              <button
+                type="button"
+                onClick={() => deleteMutation.mutate(deletingId)}
+                disabled={deleteMutation.isPending}
+                className="flex-1 py-2 rounded-lg bg-rose-500 text-white text-sm font-medium hover:bg-rose-600 disabled:opacity-60 transition"
+              >
+                {deleteMutation.isPending ? 'Deleting…' : 'Delete'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="grid gap-4">
         {data?.map((plan) => (
           <PlanCard
@@ -182,6 +222,7 @@ export default function WellnessPlans() {
             plan={plan}
             onStatusChange={(id, status) => statusMutation.mutate({ id, status })}
             onNavigate={(id) => navigate(`/wellness/${id}`)}
+            onDelete={(id) => setDeletingId(id)}
           />
         ))}
       </div>

@@ -13,5 +13,8 @@ export const authApi = {
   completeOnboarding: (notification_time: string) =>
     client.patch<User>('/auth/me/onboarding', { notification_time }),
 
+  updateProfile: (data: { gender?: string; age?: number; timezone?: string; notification_time?: string }) =>
+    client.patch<User>('/auth/profile', data),
+
   deleteAccount: () => client.delete('/auth/me'),
 }

@@ -11,7 +11,8 @@ import Journal from '@/pages/Journal'
 import JournalEditor from '@/pages/JournalEditor'
 import WellnessPlans from '@/pages/WellnessPlans'
 import PlanDetail from '@/pages/PlanDetail'
-import Analytics from '@/pages/Analytics'
+import MoodAnalytics from '@/pages/MoodAnalytics'
+import Therapist from '@/pages/Therapist'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
@@ -43,7 +44,9 @@ export default function App() {
                   <Route path="/journal/:id" element={<JournalEditor />} />
                   <Route path="/wellness" element={<WellnessPlans />} />
                   <Route path="/wellness/:planId" element={<PlanDetail />} />
-                  <Route path="/analytics" element={<Analytics />} />
+                  <Route path="/analytics" element={<MoodAnalytics />} />
+                  <Route path="/therapist" element={<Therapist />} />
+                  <Route path="/therapist/:sessionId" element={<Therapist />} />
                   <Route path="*" element={<Navigate to="/dashboard" replace />} />
                 </Routes>
               </AppShell>

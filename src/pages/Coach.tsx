@@ -15,6 +15,14 @@ import ChatWindow from "../components/chat/ChatWindow";
 import { useAuthStore } from "../store/authStore";
 import { ChatMessage, ChatSession } from "../types";
 
+function formatSessionTime(iso: string): string {
+  const d = new Date(iso)
+  const now = new Date()
+  const isToday = d.toDateString() === now.toDateString()
+  if (isToday) return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  return d.toLocaleDateString([], { month: 'short', day: 'numeric' })
+}
+
 export default function Coach() {
   const { sessionId } = useParams<{ sessionId: string }>();
   const navigate = useNavigate();
@@ -173,10 +181,16 @@ export default function Coach() {
                 }`}
                 onClick={() => navigate(`/coach/${session.id}`)}
               >
-                <span className="flex-1 text-sm truncate">
-                  {session.title || "Conversation"}
-                </span>
+                <div className="flex-1 min-w-0">
+                  <span className="block text-sm truncate">
+                    {session.title || "Conversation"}
+                  </span>
+                  <span className="block text-xs text-slate-400 mt-0.5">
+                    {formatSessionTime(session.updated_at)}
+                  </span>
+                </div>
                 <button
+                  type="button"
                   onClick={(e) => {
                     e.stopPropagation();
                     deleteSessionMutation.mutate(session.id);

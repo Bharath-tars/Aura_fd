@@ -2,7 +2,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   LayoutDashboard, MessageCircle, BarChart2,
-  BookOpen, Heart, Target, LogOut, Sparkles,
+  BookOpen, Heart, Target, LogOut, Sparkles, HeartHandshake,
 } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import { cn } from '@/lib/utils'
@@ -10,10 +10,11 @@ import { cn } from '@/lib/utils'
 const nav = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/coach', icon: MessageCircle, label: 'AI Coach' },
+  { to: '/therapist', icon: HeartHandshake, label: 'AI Therapist' },
   { to: '/mood', icon: Heart, label: 'Mood' },
   { to: '/journal', icon: BookOpen, label: 'Journal' },
   { to: '/wellness', icon: Target, label: 'Wellness' },
-  { to: '/analytics', icon: BarChart2, label: 'Analytics' },
+  { to: '/analytics', icon: BarChart2, label: 'Mood Analytics' },
 ]
 
 export default function Sidebar({ open }: { open: boolean }) {

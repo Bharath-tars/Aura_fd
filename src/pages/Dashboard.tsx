@@ -15,6 +15,7 @@ export default function Dashboard() {
   const { data: dashboard } = useQuery({
     queryKey: ['dashboard'],
     queryFn: () => analyticsApi.dashboard().then((r) => r.data),
+    staleTime: 2 * 60_000,
   })
 
   const { data: moodData } = useQuery({

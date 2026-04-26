@@ -1,14 +1,26 @@
-import { useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { format } from 'date-fns'
-import { Plus, BookOpen } from 'lucide-react'
+import { Plus, BookOpen, Trash2 } from 'lucide-react'
 import { journalApi } from '@/api/journal'
 import { cn, getSentimentColor, getSentimentLabel } from '@/lib/utils'
 
 export default function Journal() {
+  const qc = useQueryClient()
+  const [deletingId, setDeletingId] = useState<string | null>(null)
+
   const { data, isLoading } = useQuery({
     queryKey: ['journal-list'],
     queryFn: () => journalApi.list().then((r) => r.data),
+  })
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => journalApi.delete(id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['journal-list'] })
+      setDeletingId(null)
+    },
   })
 
   return (
@@ -45,35 +57,69 @@ export default function Journal() {
 
       <div className="grid gap-3">
         {data?.data.map((entry) => (
-          <Link
-            key={entry.id}
-            to={`/journal/${entry.id}`}
-            className="block bg-white rounded-2xl border border-border p-4 shadow-sm hover:shadow-md transition-shadow"
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex-1 min-w-0">
-                <h3 className="font-medium text-foreground truncate">{entry.title}</h3>
-                <div className="flex flex-wrap gap-1.5 mt-2">
-                  {entry.themes.slice(0, 4).map((t) => (
-                    <span key={t} className="text-xs px-2 py-0.5 bg-secondary rounded-full text-muted-foreground">
-                      {t.replace(/_/g, ' ')}
+          <div key={entry.id} className="group relative bg-white rounded-2xl border border-border shadow-sm hover:shadow-md transition-shadow">
+            <Link
+              to={`/journal/${entry.id}`}
+              className="block p-4"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-medium text-foreground truncate">{entry.title}</h3>
+                  <div className="flex flex-wrap gap-1.5 mt-2">
+                    {entry.themes.slice(0, 4).map((t) => (
+                      <span key={t} className="text-xs px-2 py-0.5 bg-secondary rounded-full text-muted-foreground">
+                        {t.replace(/_/g, ' ')}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex flex-col items-end gap-2 shrink-0">
+                  <time className="text-xs text-muted-foreground">
+                    {format(new Date(entry.created_at), 'MMM d')}
+                  </time>
+                  {entry.analyzed && (
+                    <span className={cn('text-xs px-2 py-0.5 rounded-full font-medium', getSentimentColor(entry.sentiment_score))}>
+                      {getSentimentLabel(entry.sentiment_score)}
                     </span>
-                  ))}
+                  )}
+                  <span className="text-xs text-muted-foreground">{entry.word_count} words</span>
                 </div>
               </div>
-              <div className="flex flex-col items-end gap-2 shrink-0">
-                <time className="text-xs text-muted-foreground">
-                  {format(new Date(entry.created_at), 'MMM d')}
-                </time>
-                {entry.analyzed && (
-                  <span className={cn('text-xs px-2 py-0.5 rounded-full font-medium', getSentimentColor(entry.sentiment_score))}>
-                    {getSentimentLabel(entry.sentiment_score)}
-                  </span>
-                )}
-                <span className="text-xs text-muted-foreground">{entry.word_count} words</span>
-              </div>
+            </Link>
+
+            {/* Delete controls */}
+            <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
+              {deletingId === entry.id ? (
+                <div className="flex items-center gap-1 bg-white rounded-lg border border-border shadow-sm px-2 py-1">
+                  <span className="text-xs text-muted-foreground">Delete?</span>
+                  <button
+                    type="button"
+                    onClick={() => deleteMutation.mutate(entry.id)}
+                    disabled={deleteMutation.isPending}
+                    className="text-xs px-2 py-0.5 rounded bg-rose-500 text-white hover:bg-rose-600 transition disabled:opacity-60"
+                  >
+                    Yes
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setDeletingId(null)}
+                    className="text-xs text-muted-foreground hover:text-foreground"
+                  >
+                    No
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={(e) => { e.preventDefault(); setDeletingId(entry.id) }}
+                  aria-label="Delete entry"
+                  className="p-1.5 rounded-lg bg-white border border-border text-muted-foreground hover:text-rose-500 hover:border-rose-200 transition shadow-sm"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                </button>
+              )}
             </div>
-          </Link>
+          </div>
         ))}
       </div>
     </div>

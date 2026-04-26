@@ -10,6 +10,9 @@ export const moodApi = {
 
   get: (id: string) => client.get<MoodEntry>(`/mood/${id}`),
 
+  update: (id: string, data: { score?: number; energy_level?: number; emotions?: string[]; factors?: string[]; notes?: string }) =>
+    client.patch<MoodEntry>(`/mood/${id}`, data),
+
   delete: (id: string) => client.delete(`/mood/${id}`),
 
   analytics: () => client.get<MoodAnalytics>('/mood/analytics'),

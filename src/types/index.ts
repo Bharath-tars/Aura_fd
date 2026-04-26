@@ -5,6 +5,8 @@ export interface User {
   timezone: string
   notification_time: string
   onboarding_complete: boolean
+  gender: string | null
+  age: number | null
 }
 
 export interface AuthState {
@@ -112,6 +114,25 @@ export interface ChatMessage {
   created_at: string
 }
 
+export interface JournalStats {
+  total_entries: number
+  analyzed_entries: number
+  avg_sentiment: number | null
+}
+
+export interface TaskStats {
+  total_tasks: number
+  completed_tasks: number
+  completion_rate: number
+  total_time_logged_min: number
+}
+
+export interface WellnessStats {
+  active_plans: number
+  completed_plans: number
+  avg_progress_pct: number
+}
+
 export interface Dashboard {
   wellness_score: number
   current_streak: number
@@ -122,7 +143,34 @@ export interface Dashboard {
   total_journal_entries: number
   active_plans: number
   top_insights: string[]
-  positive_levers: { factor: string; delta: string }[]
+  positive_levers: { factor: string; delta: number }[]
+  // Full mood analytics
+  avg_score: number
+  trend: 'rising' | 'falling' | 'stable' | 'insufficient_data'
+  total_entries: number
+  weekly_avgs: number[]
+  emotion_freq: Record<string, number>
+  top_positive_factors: string[]
+  top_negative_factors: string[]
+  // Cross-platform
+  journal_stats: JournalStats
+  task_stats: TaskStats
+  wellness_stats: WellnessStats
+}
+
+export interface TherapistSession {
+  id: string
+  title: string
+  created_at: string
+  updated_at: string
+}
+
+export interface TherapistMessage {
+  id: string
+  session_id: string
+  role: 'user' | 'assistant'
+  content: string
+  created_at: string
 }
 
 export interface Streak {
