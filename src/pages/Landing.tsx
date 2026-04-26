@@ -885,22 +885,54 @@ export default function Landing() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/5 bg-[#03040a] px-8 py-8">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-white/20">
-          <div className="flex items-center gap-2.5">
-            <div className="w-5 h-5 rounded-lg bg-indigo-600 flex items-center justify-center">
-              <Sparkles className="h-3 w-3 text-white" />
+      <footer className="border-t border-white/5 bg-[#03040a] px-8 py-12">
+        <div className="max-w-6xl mx-auto">
+          {/* Top row */}
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 pb-8 border-b border-white/5">
+            {/* Brand */}
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-xl bg-indigo-600 flex items-center justify-center">
+                  <Sparkles className="h-3.5 w-3.5 text-white" />
+                </div>
+                <span className="font-bold text-white/70 text-base tracking-tight">Aura</span>
+              </div>
+              <p className="text-xs text-white/25 max-w-[220px] leading-relaxed">
+                AI-powered mental wellness — your personal companion for mood, growth, and clarity.
+              </p>
             </div>
-            <span className="font-semibold text-white/40">Aura</span>
-            <span>— AI Mental Wellness Platform · © 2025 Synaptyx.AI</span>
+
+            {/* Features */}
+            <div className="flex flex-col gap-1.5">
+              <p className="text-[10px] uppercase tracking-widest text-white/20 font-medium mb-1">Technology</p>
+              <span className="text-xs text-white/30">Multi-Agent Intelligence</span>
+              <span className="text-xs text-white/30">Evidence-based design</span>
+              <span className="text-xs text-white/30">Cohen's d = 0.47 coaching effect</span>
+            </div>
+
+            {/* Sources */}
+            <div className="flex flex-col gap-1.5">
+              <p className="text-[10px] uppercase tracking-widest text-white/20 font-medium mb-1">Data Sources</p>
+              <span className="text-xs text-white/30">WHO Global Health Report 2025</span>
+              <span className="text-xs text-white/30">McKinsey MHI 2025</span>
+              <span className="text-xs text-white/30">Deloitte Workplace Study 2024</span>
+            </div>
           </div>
-          <div className="flex flex-wrap gap-x-6 gap-y-1 justify-center">
-            <span>Multi-Agent Intelligence</span>
-            <span>Evidence-based design</span>
-            <span>Cohen's d = 0.47 coaching effect</span>
-          </div>
-          <div className="text-white/15 text-[11px] text-center md:text-right leading-relaxed">
-            Stats: WHO 2025 · McKinsey MHI 2025 · Deloitte 2024
+
+          {/* Bottom row */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 text-[11px]">
+            <span className="text-white/20">© 2025 Aura · AI Mental Wellness Platform</span>
+            <span className="text-white/20">
+              Built by{' '}
+              <a
+                href="https://www.linkedin.com/in/bharath-sudarsanam/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-indigo-400/70 hover:text-indigo-300 transition-colors underline underline-offset-2"
+              >
+                Sudarsanam Bharath
+              </a>
+            </span>
           </div>
         </div>
       </footer>
