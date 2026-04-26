@@ -40,7 +40,7 @@ export default function ChatInput({
   };
 
   return (
-    <div className="flex items-end gap-3 border-t border-slate-100 bg-white p-4">
+    <div className="shrink-0 flex items-end gap-3 border-t border-slate-100 bg-white p-4">
       <textarea
         ref={textareaRef}
         value={value}

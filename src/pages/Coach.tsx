@@ -152,9 +152,9 @@ export default function Coach() {
   const activeSession = sessions.find((s) => s.id === sessionId);
 
   return (
-    <div className="flex h-full">
+    <div className="flex h-full overflow-hidden">
       {/* Sessions sidebar */}
-      <div className="w-56 shrink-0 border-r border-slate-100 bg-white flex flex-col">
+      <div className="w-56 shrink-0 border-r border-slate-100 bg-white flex flex-col overflow-hidden">
         <div className="p-4 border-b border-slate-100">
           <button
             onClick={() => createSessionMutation.mutate()}
@@ -213,18 +213,18 @@ export default function Coach() {
       </div>
 
       {/* Chat area */}
-      <div className="flex-1 flex flex-col min-w-0 bg-slate-50">
+      <div className="flex-1 flex flex-col min-w-0 bg-slate-50 overflow-hidden">
         {sessionId ? (
           <>
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 bg-white border-b border-slate-100">
+            <div className="shrink-0 flex items-center justify-between px-6 py-4 bg-white border-b border-slate-100">
               <div>
                 <h2 className="font-semibold text-slate-800">
                   {activeSession?.title || "Aura"}
                 </h2>
                 <p className="text-xs text-slate-400">
                   {isStreaming ? (
-                    <span className="text-indigo-500">Aura is thinking...</span>
+                    <span className="text-indigo-500 animate-pulse">Aura is thinking…</span>
                   ) : (
                     "Your personal wellness companion"
                   )}

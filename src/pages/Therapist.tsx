@@ -309,30 +309,47 @@ export default function Therapist() {
       </div>
 
       {/* Chat area */}
-      <div className="flex-1 flex flex-col min-w-0 bg-slate-50">
+      <div className="flex-1 flex flex-col min-w-0 bg-slate-50 overflow-hidden">
         {sessionId ? (
           <>
             {/* Header */}
-            <div className="flex items-center gap-3 px-6 py-4 bg-white border-b border-slate-100">
+            <div className="shrink-0 flex items-center gap-3 px-6 py-4 bg-white border-b border-slate-100">
               <div className="w-9 h-9 rounded-full bg-gradient-to-br from-violet-400 to-purple-500 flex items-center justify-center text-white text-sm font-bold shrink-0">
                 T
               </div>
-              <div>
-                <h2 className="font-semibold text-slate-800">{activeSession?.title || 'Your Therapist'}</h2>
+              <div className="flex-1 min-w-0">
+                <h2 className="font-semibold text-slate-800 truncate">{activeSession?.title || 'Your Therapist'}</h2>
                 <p className="text-xs text-slate-400">
-                  {isStreaming ? <span className="text-violet-500">Listening…</span> : 'Here for you, always'}
+                  {isStreaming ? <span className="text-violet-500 animate-pulse">Listening…</span> : 'Here for you, always'}
                 </p>
               </div>
             </div>
 
             {/* Profile banner */}
-            {showProfile && <ProfileBanner onDone={() => setShowProfile(false)} />}
+            {showProfile && <div className="shrink-0 px-4 pt-3"><ProfileBanner onDone={() => setShowProfile(false)} /></div>}
 
-            {/* Messages */}
+            {/* Messages — fills all remaining space */}
             <div className="flex-1 overflow-y-auto px-6 py-6 space-y-5">
+              {messages.length === 0 && !isStreaming && (
+                <div className="flex flex-col items-center justify-center h-full text-center py-16">
+                  <div className="w-12 h-12 rounded-full bg-violet-100 flex items-center justify-center mb-3">
+                    <Heart className="w-5 h-5 text-violet-400" />
+                  </div>
+                  <p className="text-sm text-slate-400 max-w-xs">Start by sharing what's on your mind. There's no right or wrong thing to say.</p>
+                </div>
+              )}
               {messages.map((msg) => <MessageBubble key={msg.id} msg={msg} />)}
               {isStreaming && streamingContent && <StreamingBubble content={streamingContent} />}
-
+              {isStreaming && !streamingContent && (
+                <div className="flex justify-start">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-400 to-purple-500 flex items-center justify-center text-white text-xs font-bold mr-3 mt-1 shrink-0">T</div>
+                  <div className="px-4 py-3 rounded-2xl rounded-bl-sm bg-white border border-slate-100 shadow-sm flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-bounce [animation-delay:0ms]" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-bounce [animation-delay:150ms]" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-bounce [animation-delay:300ms]" />
+                  </div>
+                </div>
+              )}
               {crisisLevel >= 2 && crisisResources.length > 0 && (
                 <div className="bg-rose-50 border border-rose-200 rounded-2xl p-4 space-y-2">
                   <p className="text-sm font-semibold text-rose-700">You're not alone — support is available</p>
@@ -344,8 +361,8 @@ export default function Therapist() {
               <div ref={bottomRef} />
             </div>
 
-            {/* Input */}
-            <div className="px-6 py-4 bg-white border-t border-slate-100">
+            {/* Input — always at bottom */}
+            <div className="shrink-0 px-4 py-4 bg-white border-t border-slate-100">
               <div className="flex items-end gap-3 bg-slate-50 rounded-2xl border border-slate-200 px-4 py-3 focus-within:border-violet-300 focus-within:ring-2 focus-within:ring-violet-100 transition">
                 <textarea
                   value={input}
@@ -355,8 +372,8 @@ export default function Therapist() {
                   }}
                   placeholder="Share what's on your mind…"
                   aria-label="Message"
-                  rows={2}
-                  className="flex-1 bg-transparent text-sm text-slate-700 resize-none focus:outline-none placeholder:text-slate-400 leading-relaxed"
+                  rows={1}
+                  className="flex-1 bg-transparent text-sm text-slate-700 resize-none focus:outline-none placeholder:text-slate-400 leading-relaxed max-h-32 overflow-y-auto"
                 />
                 <button
                   type="button"
@@ -370,6 +387,7 @@ export default function Therapist() {
                   </svg>
                 </button>
               </div>
+              <p className="text-center text-[11px] text-slate-300 mt-2">Press Enter to send · Shift+Enter for new line</p>
             </div>
           </>
         ) : (
