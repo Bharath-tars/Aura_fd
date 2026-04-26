@@ -139,13 +139,12 @@ function Section({
   );
 }
 
-// Slide label
-function Label({ n, tag }: { n: string; tag: string }) {
+// Section label
+function Label({ tag }: { n?: string; tag: string }) {
   return (
     <div className="flex items-center gap-3 mb-10">
-      <span className="font-mono text-[11px] text-white/20 tracking-[0.2em]">SLIDE {n}</span>
-      <div className="h-px w-12 bg-white/10" />
-      <span className="text-[11px] uppercase tracking-[0.15em] text-white/20">{tag}</span>
+      <div className="h-px w-8 bg-white/10" />
+      <span className="text-[11px] uppercase tracking-[0.18em] text-white/25">{tag}</span>
     </div>
   );
 }
